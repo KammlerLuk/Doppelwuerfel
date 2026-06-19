@@ -28,3 +28,43 @@ int compare_key_elements_for_sorting(const void *a, const void *b) {
 
     return (int)ea->original_index - (int)eb->original_index;
 }
+
+ALLOC_RESULT create_premutation_matrix(const char key[], const char msg[], char ***permutation_matrix, size_t *permutation_matrix_row_count, size_t *permutation_matrix_col_count) {
+    size_t key_len, msg_len, row_index, b_row_index;
+
+    key_len = strlen(key);
+    msg_len = strlen(msg);
+
+    *permutation_matrix_col_count = key_len;
+    *permutation_matrix_row_count = msg_len / key_len;
+
+    if (msg_len % key_len != 0) 
+        (*permutation_matrix_row_count)++;
+
+    *permutation_matrix = malloc(sizeof(char*) * (*permutation_matrix_row_count));
+    if (*permutation_matrix == NULL) {
+        return NULL_ERROR;
+    }
+
+    for (row_index = 0; row_index < (*permutation_matrix_row_count); row_index++) {
+        (*permutation_matrix)[row_index] = malloc(sizeof(char) * (*permutation_matrix_col_count));
+        if ((*permutation_matrix)[row_index] == NULL) {
+            for (b_row_index = 0; b_row_index < row_index; b_row_index++) {
+                free((*permutation_matrix)[b_row_index]);
+            }
+            free(*permutation_matrix);
+            return NULL_ERROR;
+        }
+    }
+
+    return SUCCESS;
+}
+
+void destroy_permutation_matrix(char ***permutation_matrix, size_t permutation_matrix_row_count) {
+    size_t row_index;
+    
+    for (row_index = 0; row_index < permutation_matrix_row_count; row_index++) {
+        free((*permutation_matrix)[row_index]);   
+    }
+    free(*permutation_matrix);
+}
