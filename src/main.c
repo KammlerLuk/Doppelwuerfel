@@ -10,17 +10,20 @@ int main(void) {
 
     if (encrypt_total(clear_msg, first_key, second_key, &encoded_msg) == NULL_ERROR) {
         printf("FUCK\n");
+        return 1;
     } else {
         printf("%s\n", encoded_msg);
     }
 
     if (decrypt_total(encoded_msg, first_key, second_key, &cleared_msg) == NULL_ERROR) {
         printf("FUCK\n");
+        free(encoded_msg);
+        return 2;
     } else {
         printf("%s\n", cleared_msg);
         free(cleared_msg);
+        free(encoded_msg);
     }
-    free(encoded_msg);
     
     return 0;
 }
