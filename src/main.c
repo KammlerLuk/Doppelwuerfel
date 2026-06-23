@@ -1,24 +1,29 @@
 #include <stdio.h>
-#include "cipher_core.h"
+#include "encrypt.h"
+#include "decrypt.h"
 
 int main(void) {
-    size_t len, i;
-    key_element *elements;
-    char key[] = "HelloWorld";
+    char *encoded_msg, *cleared_msg;
+    char clear_msg[] = "Hello World";
+    char first_key[] = "Tree";
+    char second_key[] = "Lee";
 
-    if (NULL_ERROR == sort_key(key, &elements, &len)) {
-        printf("malloc returned NULL!");
+    if (encrypt_total(clear_msg, first_key, second_key, &encoded_msg) == NULL_ERROR) {
+        printf("FUCK\n");
         return 1;
+    } else {
+        printf("%s\n", encoded_msg);
     }
 
-    printf("key length: %i\n", len);
-
-    printf("letter\toriginal index\n");
-    for (i = 0; i < len; i++) {
-        printf("%c\t%i\n", elements[i].letter, elements[i].original_index);
+    if (decrypt_total(encoded_msg, first_key, second_key, &cleared_msg) == NULL_ERROR) {
+        printf("FUCK\n");
+        free(encoded_msg);
+        return 2;
+    } else {
+        printf("%s\n", cleared_msg);
+        free(cleared_msg);
+        free(encoded_msg);
     }
-
-    free(elements);
-
+    
     return 0;
 }
