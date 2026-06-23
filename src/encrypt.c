@@ -41,7 +41,7 @@ ALLOC_RESULT encrypt_step(const char clear_msg[], const char key[], char **encod
     }
 
     *encoded_msg = malloc(sizeof(char) * strlen(clear_msg));
-    if (encoded_msg == NULL) {
+    if (*encoded_msg == NULL) {
         destroy_permutation_matrix(&permutation_matrix, permutation_matrix_row_count);
         free(sorted_structured_key);
         return NULL_ERROR;
