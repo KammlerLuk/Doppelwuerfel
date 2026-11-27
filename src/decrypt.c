@@ -1,5 +1,6 @@
 #include "decrypt.h"
 
+/* Reverse encryption order by undoing the second key before the first. */
 ALLOC_RESULT decrypt_total(const char encoded_msg[], const char first_key[], const char second_key[], char **clear_msg) {
     char *interim_result;
 
@@ -16,6 +17,7 @@ ALLOC_RESULT decrypt_total(const char encoded_msg[], const char first_key[], con
     return SUCCESS;
 }
 
+/* Rebuild columns in key order, then read the matrix row-wise. */
 ALLOC_RESULT decrypt_step(const char encoded_msg[], const char key[], char **clear_msg) {
     size_t permutation_matrix_row_count, permutation_matrix_col_count, r_idx, c_idx, m_idx, sorted_structured_key_len, k_idx;
     char **permutation_matrix;

@@ -1,5 +1,6 @@
 #include "encrypt.h"
 
+/* Apply the first key and then the second, releasing the intermediate string. */
 ALLOC_RESULT encrypt_total(const char clear_msg[], const char first_key[], const char second_key[], char **encoded_msg) {
     char *interim_result;
 
@@ -16,6 +17,7 @@ ALLOC_RESULT encrypt_total(const char clear_msg[], const char first_key[], const
     return SUCCESS;
 }
 
+/* Fill the matrix row-wise and emit columns in sorted-key order. */
 ALLOC_RESULT encrypt_step(const char clear_msg[], const char key[], char **encoded_msg) {
     size_t permutation_matrix_row_count, permutation_matrix_col_count, r_idx, c_idx, m_idx, sorted_structured_key_len, k_idx;
     char **permutation_matrix;
