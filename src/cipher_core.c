@@ -1,5 +1,6 @@
 #include "cipher_core.h"
 
+/* Build the sortable key array while retaining each character's source index. */
 ALLOC_RESULT sort_key(const char key[], key_element **sorted_structured_key, size_t *sorted_structured_key_len) {
     size_t key_index;
 
@@ -19,6 +20,7 @@ ALLOC_RESULT sort_key(const char key[], key_element **sorted_structured_key, siz
     return SUCCESS;
 }
 
+/* qsort ordering: folded character first, then original key position. */
 int compare_key_elements_for_sorting(const void *a, const void *b) {
     key_element *ea = (key_element *)a;
     key_element *eb = (key_element *)b;
@@ -29,6 +31,7 @@ int compare_key_elements_for_sorting(const void *a, const void *b) {
     return (int)ea->original_index - (int)eb->original_index;
 }
 
+/* Allocate enough rows to hold the message at the key's column width. */
 ALLOC_RESULT create_premutation_matrix(const char key[], const char msg[], char ***permutation_matrix, size_t *permutation_matrix_row_count, size_t *permutation_matrix_col_count) {
     size_t key_len, msg_len, row_index, b_row_index;
 
@@ -60,6 +63,7 @@ ALLOC_RESULT create_premutation_matrix(const char key[], const char msg[], char 
     return SUCCESS;
 }
 
+/* Release every allocated row before releasing the matrix pointer array. */
 void destroy_permutation_matrix(char ***permutation_matrix, size_t permutation_matrix_row_count) {
     size_t row_index;
     
